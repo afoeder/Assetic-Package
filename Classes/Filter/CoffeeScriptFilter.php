@@ -3,7 +3,7 @@
 /*
  * This file is part of the Assetic package, an OpenSky project.
  *
- * (c) 2010-2011 OpenSky Project Inc
+ * (c) 2010-2012 OpenSky Project Inc
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,12 +12,13 @@
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
+use Assetic\Exception\FilterException;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * Compiles CoffeeScript into Javascript.
  *
- * @link http://jashkenas.github.com/coffee-script/
+ * @link http://coffeescript.org/
  * @author Kris Wallsmith <kris.wallsmith@gmail.com>
  */
 class CoffeeScriptFilter implements FilterInterface
@@ -60,7 +61,7 @@ class CoffeeScriptFilter implements FilterInterface
         unlink($input);
 
         if (0 < $code) {
-            throw new \RuntimeException($proc->getErrorOutput());
+            throw FilterException::fromProcess($proc)->setInput($asset->getContent());
         }
 
         $asset->setContent($proc->getOutput());

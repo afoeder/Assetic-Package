@@ -3,7 +3,7 @@
 /*
  * This file is part of the Assetic package, an OpenSky project.
  *
- * (c) 2010-2011 OpenSky Project Inc
+ * (c) 2010-2012 OpenSky Project Inc
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,11 +12,13 @@
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
+use Assetic\Exception\FilterException;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * Loads STYL files.
  *
+ * @link http://learnboost.github.com/stylus/
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
 class StylusFilter implements FilterInterface
@@ -100,7 +102,7 @@ EOF;
         unlink($input);
 
         if (0 < $code) {
-            throw new \RuntimeException($proc->getErrorOutput());
+            throw FilterException::fromProcess($proc)->setInput($asset->getContent());
         }
 
         $asset->setContent($proc->getOutput());

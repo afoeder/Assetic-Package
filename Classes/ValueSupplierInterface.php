@@ -9,13 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Assetic\Exception;
+namespace Assetic;
 
 /**
- * Marker.
+ * Value Supplier Interface.
+ *
+ * Implementations determine runtime values for compile-time variables.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-interface Exception
+interface ValueSupplierInterface
 {
+    /**
+     * Returns a map of values.
+     *
+     * @return array
+     */
+    function getValues();
 }

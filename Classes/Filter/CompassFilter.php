@@ -3,7 +3,7 @@
 /*
  * This file is part of the Assetic package, an OpenSky project.
  *
- * (c) 2010-2011 OpenSky Project Inc
+ * (c) 2010-2012 OpenSky Project Inc
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,6 +19,7 @@ use Symfony\Component\Process\ProcessBuilder;
 /**
  * Loads Compass files.
  *
+ * @link http://compass-style.org/
  * @author Maxime Thirouin <maxime.thirouin@gmail.com>
  */
 class CompassFilter implements FilterInterface
@@ -272,7 +273,14 @@ class CompassFilter implements FilterInterface
         unlink($tempName); // FIXME: don't use tempnam() here
 
         // input
-        $pb->add($input = $tempName.'.'.$type);
+        $input = $tempName.'.'.$type;
+
+        // work-around for https://github.com/chriseppstein/compass/issues/748
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $input = str_replace('\\', '/', $input);
+        }
+
+        $pb->add($input);
         file_put_contents($input, $asset->getContent());
 
         // output

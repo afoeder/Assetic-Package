@@ -3,7 +3,7 @@
 /*
  * This file is part of the Assetic package, an OpenSky project.
  *
- * (c) 2010-2011 OpenSky Project Inc
+ * (c) 2010-2012 OpenSky Project Inc
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -29,6 +29,13 @@ use Assetic\Asset\AssetInterface;
  */
 class LessphpFilter implements FilterInterface
 {
+    private $presets = array();
+
+    public function setPresets(array $presets)
+    {
+        $this->presets = $presets;
+    }
+
     public function filterLoad(AssetInterface $asset)
     {
         $root = $asset->getSourceRoot();
@@ -39,7 +46,7 @@ class LessphpFilter implements FilterInterface
             $lc->importDir = dirname($root.'/'.$path);
         }
 
-        $asset->setContent($lc->parse($asset->getContent()));
+        $asset->setContent($lc->parse($asset->getContent(), $this->presets));
     }
 
     public function filterDump(AssetInterface $asset)

@@ -17,6 +17,9 @@ fi
 
 git clone $ASSETIC_REPOSITORY ./_tempclone
 
+echo Removing Twig Extension
+rm -rf ./_tempclone/src/Assetic/Extension/Twig
+
 echo Copying files
 cp -R ./_tempclone/src/Assetic/* ./Classes
 cp -R ./_tempclone/LICENSE ./Meta
